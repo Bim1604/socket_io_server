@@ -16,6 +16,12 @@ void main() async {
     client.on('disconnect', (_) {
       print('❌ Client disconnected');
     });
+
+    final port = int.parse(Platform.environment['PORT'] ?? '10000');
+    io.listen(port);
+    print('🚀 Listening on port $port');
+
+
   });
 
   io.listen(port);

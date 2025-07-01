@@ -2,7 +2,7 @@ services:
   - type: web
     name: dart-socket-server
     runtime: docker
-    repo: https://github.com/<your-username>/<your-repo>
+    repo: https://github.com/Bim1604/websocket.git
     dockerfilePath: ./Dockerfile
     envVars:
       - key: DART_ENV
