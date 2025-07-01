@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: dart-socket-server
+    runtime: docker
+    repo: https://github.com/<your-username>/<your-repo>
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: DART_ENV
+        value: production
