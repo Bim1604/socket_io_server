@@ -34,9 +34,11 @@ void main() async {
       /// confirmXPoint:hai:502
       print('Received $receivedConfirmStore: $data');
       List<String> temp = data.toString().split(":");
-      int xPoint = int.parse(temp[1]);
-      int money = int.parse(temp[2]);
-      client.emit(sendConfirmStore, "$actionResult:$xPoint:$money");
+      if (temp.length > 1) {
+        int xPoint = int.parse(temp[1]);
+        int money = int.parse(temp[2]);
+        client.emit(sendConfirmStore, "$actionResult:$xPoint:$money");
+      }
     });
 
     client.on('disconnect', (_) {
