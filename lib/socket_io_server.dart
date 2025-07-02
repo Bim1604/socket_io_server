@@ -10,20 +10,20 @@ void main() async {
   final port = int.parse(Platform.environment['PORT'] ?? '3000');
   final io = Server();
 
+  final Map<String, Socket> clients = {};
+
   io.on('connection', (client) {
     print('✅ Client connected: ${client.id}');
-
+    clients[client.id] = client;
     client.on('ping', (data) {
       print('📥 Received ping: $data');
       client.emit('pong', 'Hello from Dart server!');
     });
 
     client.on(sendConfirmStore, (data) {
-      print('Received $sendConfirmStore: $data');
-      print("toString $data.toString()");
-      print(data.toString() == "StoreConfirm");
+      final clientReceive = clients.entries.where((e) => e.value.id != client.id) as Socket;
       if (data.toString() == "StoreConfirm") {
-        client.emit(receivedConfirmStore, data);
+        clientReceive.emit(receivedConfirmStore, data);
       }
     });
 
