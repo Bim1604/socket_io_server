@@ -21,9 +21,12 @@ void main() async {
     });
 
     client.on(sendConfirmStore, (data) {
-      final clientReceive = clients.entries.where((e) => e.value.id != client.id) as Socket;
-      if (data.toString() == "StoreConfirm") {
-        clientReceive.emit(receivedConfirmStore, data);
+      MapEntry<String, Socket>? clientReceive = clients.entries
+          .where((entry) => entry.value.id != client.id)
+          .cast<MapEntry<String, Socket>?>()
+          .firstOrNull;
+      if (clientReceive != null && data.toString() == "StoreConfirm") {
+        clientReceive.value.emit(receivedConfirmStore, data);
       }
     });
 
