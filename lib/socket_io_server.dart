@@ -20,6 +20,8 @@ void main() async {
 
     client.on(sendConfirmStore, (data) {
       print('Received $sendConfirmStore: $data');
+      print("toString $data.toString()");
+      print(data.toString() == "StoreConfirm");
       if (data.toString() == "StoreConfirm") {
         client.emit(receivedConfirmStore, data);
       }
@@ -32,10 +34,6 @@ void main() async {
       int xPoint = int.parse(temp[1]);
       int money = int.parse(temp[2]);
       client.emit(sendConfirmStore, "$actionResult:$xPoint:$money");
-    });
-
-    client.on('disconnect', (_) {
-      print('❌ Client disconnected');
     });
 
     client.on('disconnect', (_) {
