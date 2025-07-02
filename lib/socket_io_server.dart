@@ -31,8 +31,7 @@ void main() async {
     });
 
     client.on(receivedConfirmStore, (data) {
-      /// confirmXPoint:hai:502
-      /// confirmXPoint:329:329000
+      /// actionResult:329:329000
       print('Received $receivedConfirmStore: $data');
       List<String> temp = data.toString().split(":");
       if (temp.length > 1) {
@@ -40,7 +39,13 @@ void main() async {
         int money = int.parse(temp[2]);
         String msg = "$actionResult:$xPoint:$money";
         print("sendMSG: $msg ___ channel: $sendConfirmStore");
-        client.emit(sendConfirmStore, msg);
+        MapEntry<String, Socket>? clientReceive = clients.entries
+            .where((entry) => entry.value.id != client.id)
+            .cast<MapEntry<String, Socket>?>()
+            .firstOrNull;
+        if (clientReceive != null) {
+          clientReceive.value.emit(sendConfirmStore, msg);
+        }
       }
     });
 
