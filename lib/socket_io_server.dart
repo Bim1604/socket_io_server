@@ -32,12 +32,15 @@ void main() async {
 
     client.on(receivedConfirmStore, (data) {
       /// confirmXPoint:hai:502
+      /// confirmXPoint:329:329000
       print('Received $receivedConfirmStore: $data');
       List<String> temp = data.toString().split(":");
       if (temp.length > 1) {
         int xPoint = int.parse(temp[1]);
         int money = int.parse(temp[2]);
-        client.emit(sendConfirmStore, "$actionResult:$xPoint:$money");
+        String msg = "$actionResult:$xPoint:$money";
+        print("sendMSG: $msg ___ channel: $sendConfirmStore");
+        client.emit(sendConfirmStore, msg);
       }
     });
 
