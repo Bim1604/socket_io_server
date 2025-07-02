@@ -1,8 +1,10 @@
 import 'dart:io';
 import 'package:socket_io/socket_io.dart';
 
-final channelCus = "sendXPoint";
-final channel = "receiveXPoint";
+final receivedConfirmStore = "receivedConfirmStore";
+final sendConfirmStore = "sendConfirmStore";
+final actionResult = 'actionResult';
+final String sendConfirm = "sendConfirm";
 
 void main() async {
   final port = int.parse(Platform.environment['PORT'] ?? '3000');
@@ -16,13 +18,20 @@ void main() async {
       client.emit('pong', 'Hello from Dart server!');
     });
 
-    client.on(channel, (data) {
-      print('Received $channel: $data');
+    client.on(sendConfirmStore, (data) {
+      print('Received $sendConfirmStore: $data');
+      if (data.toString() == "StoreConfirm") {
+        client.emit(receivedConfirmStore, data);
+      }
     });
 
-    client.on(channelCus, (data) {
-      print('Received $channelCus: $data');
-
+    client.on(receivedConfirmStore, (data) {
+      /// confirmXPoint:hai:502
+      print('Received $receivedConfirmStore: $data');
+      List<String> temp = data.toString().split(":");
+      int xPoint = int.parse(temp[1]);
+      int money = int.parse(temp[2]);
+      client.emit(sendConfirmStore, "$actionResult:$xPoint:$money");
     });
 
     client.on('disconnect', (_) {
